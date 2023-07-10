@@ -27,7 +27,8 @@ fun CoinListScreen(
     val state = viewModel.state.value
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(state.coins) { coin ->
+            if (state.coins.isEmpty() && !state.isLoading) item { Text(text = "No coins found") }
+            else items(state.coins) { coin ->
                 CoinListItem(
                     coin = coin,
                     onItemClick = {
@@ -36,7 +37,7 @@ fun CoinListScreen(
                 )
             }
         }
-        if(state.error.isNotBlank()) {
+        if (state.error.isNotBlank()) {
             Text(
                 text = state.error,
                 color = MaterialTheme.colors.error,
@@ -47,7 +48,7 @@ fun CoinListScreen(
                     .align(Alignment.Center)
             )
         }
-        if(state.isLoading) {
+        if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
