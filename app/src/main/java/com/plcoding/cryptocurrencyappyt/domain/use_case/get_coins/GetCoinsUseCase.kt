@@ -13,15 +13,25 @@ import javax.inject.Inject
 class GetCoinsUseCase @Inject constructor(
     private val repository: CoinRepository
 ) {
-    operator fun invoke(): Flow<Resource<List<Coin>>> = flow {
+    operator fun invoke(filter: String?): Flow<Resource<List<Coin>>> = flow {
+        var finalCoins: List<Coin>
         try {
             emit(Resource.Loading<List<Coin>>())
             val coins = repository.getCoins()
-            emit(Resource.Success<List<Coin>>(coins))
-        } catch(e: HttpException) {
+            finalCoins = coins
+            filter?.let {
+                finalCoins = filterCoins(filter, coins)
+            }
+            emit(Resource.Success<List<Coin>>(finalCoins))
+        } catch (e: HttpException) {
             emit(Resource.Error<List<Coin>>(e.localizedMessage ?: "An unexpected error occured"))
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             emit(Resource.Error<List<Coin>>("Couldn't reach server. Check your internet connection."))
         }
+    }
+
+    private fun filterCoins(filter: String, coins: List<Coin>) = coins.filter {
+        val output = "${it.rank}. ${it.name} (${it.symbol})"
+        output.contains(filter, ignoreCase = true)
     }
 }
