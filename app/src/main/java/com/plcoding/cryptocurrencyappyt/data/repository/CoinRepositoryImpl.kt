@@ -30,6 +30,15 @@ class CoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCoinById(coinId: String): CoinDetail {
-        return api.getCoinById(coinId).toCoinDetail()
+        val localCoin = dao.getCoinDetails(coinId)?.toCoinDetail()
+        localCoin?.let { coinDetail ->
+            Log.d("CoinRepoImpl", "LocalCoin with id $coinId exists.")
+            return coinDetail
+        }
+        val remoteCoin = api.getCoinById(coinId)
+        dao.insertCoinDetail(remoteCoin.toCoinDetailEntity())
+
+        Log.d("CoinRepoImpl", "LocalCoin with id $coinId does not exist.")
+        return remoteCoin.toCoinDetail()
     }
 }

@@ -1,4 +1,4 @@
-TODO
+(done) TODO
 F1
 As a developer, I want the app to use ROOM to cache the coins list, and use the data from ROOM as the main source of data when the app is launched.
 - when the app loads for the first time, the local DB is empty, thus use the data from remote. Then store that data locally.
@@ -6,6 +6,12 @@ So that, when the app is loaded again, it will use the data stored locally.
 
 TODO
 F2
+As a developer, I want to the app to cache the coin details when fetched for the first time, then use the cached one as the source of data for coin details screen.
+- when the app goes to coin details screen and the coin details for the specific ID is not yet saved locally, use the remote data. if already saved locally,
+use the saved data.
+
+TODO
+F3
 As a user, I want a search box at the top of the home/coins list screen, where when I type the coin name, it will filter all coins that have that name.
 - for example, if I type "the", all coins that contains "the" in their name will be filtered.
 i.e. "Ethereum (ETH)", "Tether (USDT)", "The Open Network (TONCOIN)", etc.

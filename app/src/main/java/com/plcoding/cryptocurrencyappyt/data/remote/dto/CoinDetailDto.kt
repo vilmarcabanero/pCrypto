@@ -2,6 +2,7 @@ package com.plcoding.cryptocurrencyappyt.data.remote.dto
 
 
 import com.google.gson.annotations.SerializedName
+import com.plcoding.cryptocurrencyappyt.data.local.model.CoinDetailEntity
 import com.plcoding.cryptocurrencyappyt.domain.model.CoinDetail
 
 data class CoinDetailDto(
@@ -40,7 +41,21 @@ data class CoinDetailDto(
     val team: List<TeamMember>,
     val type: String,
     val whitepaper: Whitepaper
-)
+) {
+    fun toCoinDetailEntity(): CoinDetailEntity {
+        return CoinDetailEntity(
+            id = id,
+            name = name,
+            description = description,
+            symbol = symbol,
+            rank = rank,
+            isActive = isActive,
+            tags = tags.map { it.name },
+            team = team
+        )
+    }
+}
+
 
 fun CoinDetailDto.toCoinDetail(): CoinDetail {
     return CoinDetail(
